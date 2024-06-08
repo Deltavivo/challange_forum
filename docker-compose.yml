@@ -1,0 +1,39 @@
+services:
+  mysql-forum:
+    container_name: mysql-forum
+    image: mysql:latest
+    environment:
+      - MYSQL_DATABASE=forum
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=user
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_TCP_PORT=3306
+    ports:
+      - "3312:3306"
+    networks:
+      - forum-network
+
+  forum-project:
+    container_name: forum-build
+    build: forumProject/
+    depends_on:
+      - mysql-forum
+    ports:
+      - "9001:9001"
+    networks:
+      - forum-network
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 30s
+        max_attempts: 3
+    environment:
+      - DB_HOST=mysql-forum
+      - DB_PORT=3306
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_NAME=forum
+
+networks:
+  forum-network:
+    driver: bridge

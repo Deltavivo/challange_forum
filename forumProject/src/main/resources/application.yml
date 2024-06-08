@@ -1,0 +1,20 @@
+server:
+    port: 9001
+
+    error:
+        include-stacktrace: never
+
+spring:
+    application:
+        name: forum
+
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3312}/${DB_NAME:forum}?useTimezone=true&serverTimezone=UTC
+        username: ${DB_USER:root}
+        password: ${DB_PASSWORD:root}
+    jpa:
+        hibernate:
+            ddl-auto: create
+        database-platform: org.hibernate.dialect.MySQLDialect
+        show-sql: false
